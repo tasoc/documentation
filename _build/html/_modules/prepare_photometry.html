@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>prepare_photometry &mdash; TDA CODE 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="TDA CODE 0.9 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for prepare_photometry</h1><div class="highlight"><pre>
+<span class="c">#!/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">with_statement</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="nb">range</span><span class="p">,</span> <span class="nb">zip</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">astropy.io.fits</span> <span class="kn">as</span> <span class="nn">pyfits</span>
+<span class="kn">from</span> <span class="nn">astropy.wcs</span> <span class="kn">import</span> <span class="n">WCS</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">Table</span>
+
+<span class="n">input_folder</span> <span class="o">=</span> <span class="s">r&#39;C:\Users\au195407\Documents\tess_data\input&#39;</span>
+
+<div class="viewcode-block" id="create_todo"><a class="viewcode-back" href="../photometry.html#prepare_photometry.create_todo">[docs]</a><span class="k">def</span> <span class="nf">create_todo</span><span class="p">():</span>
+  
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	:param </span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+	<span class="n">cat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="s">&#39;catalog.txt.gz&#39;</span><span class="p">),</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+	<span class="n">cat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;int64&#39;</span><span class="p">),</span> <span class="n">cat</span><span class="p">))</span>
+	<span class="c"># Convert data to astropy table for further use:</span>
+	<span class="n">cat</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+		<span class="n">data</span><span class="o">=</span><span class="n">cat</span><span class="p">,</span>
+		<span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;starid&#39;</span><span class="p">,</span> <span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="s">&#39;tmag&#39;</span><span class="p">),</span>
+		<span class="n">dtype</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">,</span> <span class="s">&#39;float64&#39;</span><span class="p">,</span> <span class="s">&#39;float64&#39;</span><span class="p">,</span> <span class="s">&#39;float32&#39;</span><span class="p">)</span>
+	<span class="p">)</span>
+
+	<span class="n">todo_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="s">&#39;todo.sqlite&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">todo_file</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">todo_file</span><span class="p">)</span>
+	<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">todo_file</span><span class="p">)</span>
+	<span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+	<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;&quot;&quot;CREATE TABLE todolist (</span>
+<span class="s">		priority BIGINT NOT NULL,</span>
+<span class="s">		starid BIGINT NOT NULL,</span>
+<span class="s">		datasource INT NOT NULL DEFAULT 0,</span>
+<span class="s">		camera INT NOT NULL,</span>
+<span class="s">		ccd INT NOT NULL,</span>
+<span class="s">		method INT DEFAULT NULL,</span>
+<span class="s">		status INT DEFAULT NULL,</span>
+<span class="s">		x REAL,</span>
+<span class="s">		y REAL,</span>
+<span class="s">		tmag REAL</span>
+<span class="s">	);&quot;&quot;&quot;</span><span class="p">)</span>
+
+	<span class="n">indx</span> <span class="o">=</span> <span class="p">(</span><span class="n">cat</span><span class="p">[</span><span class="s">&#39;tmag&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">12</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cat</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cat</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2048</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cat</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cat</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2048</span><span class="p">)</span>
+	<span class="n">cat</span> <span class="o">=</span> <span class="n">cat</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+	<span class="n">cat</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s">&#39;tmag&#39;</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">pri</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cat</span><span class="p">):</span>
+		<span class="n">starid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s">&#39;starid&#39;</span><span class="p">])</span>
+		<span class="n">tmag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s">&#39;tmag&#39;</span><span class="p">])</span>
+		<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;INSERT INTO todolist (priority,starid,camera,ccd,x,y,tmag) VALUES (?,?,?,?,?,?,?);&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">pri</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">starid</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">],</span> <span class="n">tmag</span><span class="p">))</span>
+
+	<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;CREATE UNIQUE INDEX starid_idx ON todolist (starid);&quot;</span><span class="p">)</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</div>
+<span class="k">def</span> <span class="nf">create_catalog</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">):</span>
+
+	<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+	<span class="n">cat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="s">&#39;catalog.txt.gz&#39;</span><span class="p">),</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+	<span class="n">cat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;int64&#39;</span><span class="p">),</span> <span class="n">cat</span><span class="p">))</span>
+
+	<span class="n">catalog_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="s">&#39;catalog_camera{0:d}_ccd{1:d}.sqlite&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">))</span>
+	<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">catalog_file</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">catalog_file</span><span class="p">)</span>
+	<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">catalog_file</span><span class="p">)</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+	<span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+	<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;&quot;&quot;CREATE TABLE catalog (</span>
+<span class="s">		starid BIGINT NOT NULL,</span>
+<span class="s">		ra DOUBLE PRECISION NOT NULL,</span>
+<span class="s">		decl DOUBLE PRECISION NOT NULL,</span>
+<span class="s">		tmag REAL NOT NULL</span>
+<span class="s">	);&quot;&quot;&quot;</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cat</span><span class="p">:</span>
+		<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;INSERT INTO catalog (starid,ra,decl,tmag) VALUES (?,?,?,?);&quot;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+
+	<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;CREATE UNIQUE INDEX starid_idx ON catalog (starid);&quot;</span><span class="p">)</span>
+	<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;CREATE INDEX ra_dec_idx ON catalog (ra, decl);&quot;</span><span class="p">)</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">create_hdf5</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">):</span>
+
+	<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+	<span class="n">run</span> <span class="o">=</span> <span class="s">&#39;ffi_north&#39;</span>
+	<span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">r&#39;C:\Users\au195407\Documents\tda1_data&#39;</span><span class="p">,</span> <span class="n">run</span><span class="p">)</span>
+
+	<span class="k">with</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;backgrounds.fits.gz&#39;</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;readonly&#39;</span><span class="p">,</span> <span class="n">memmap</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdu</span><span class="p">:</span>
+		<span class="n">background</span> <span class="o">=</span> <span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+	<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;simulated&#39;</span><span class="p">,</span> <span class="s">&#39;simulated_*.fits.gz&#39;</span><span class="p">))</span>
+	<span class="c">#files = files[0:50]</span>
+	<span class="n">numfiles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+	<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">numfiles</span><span class="p">)</span>
+
+	<span class="n">SUMIMAGE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+	<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">numfiles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+	<span class="n">cadenceno</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">numfiles</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;int32&#39;</span><span class="p">)</span>
+
+	<span class="c">#args = {}</span>
+	<span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="s">&#39;compression&#39;</span><span class="p">:</span> <span class="s">&#39;lzf&#39;</span><span class="p">,</span>
+		<span class="s">&#39;shuffle&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+		<span class="s">&#39;fletcher32&#39;</span><span class="p">:</span> <span class="bp">True</span>
+	<span class="p">}</span>
+
+	<span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="s">&#39;camera{0:d}_ccd{1:d}.hdf5&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">)),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdf</span><span class="p">:</span>
+
+		<span class="n">dset1</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;images&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">SUMIMAGE</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SUMIMAGE</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">numfiles</span><span class="p">),</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+		<span class="n">dset2</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;backgrounds&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">SUMIMAGE</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SUMIMAGE</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">numfiles</span><span class="p">),</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+		<span class="n">filenames</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;images/&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;.gz&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
+		<span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;imagespaths&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">filenames</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">fname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+			<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%.2f%%</span><span class="s"> - </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="n">k</span><span class="o">/</span><span class="n">numfiles</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+			<span class="k">with</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;readonly&#39;</span><span class="p">,</span> <span class="n">memmap</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">hdu</span><span class="p">:</span>
+				<span class="n">time</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s">&#39;BJD&#39;</span><span class="p">]</span>
+				<span class="n">cadenceno</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span>
+				<span class="n">flux0</span> <span class="o">=</span> <span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+				<span class="n">bck</span> <span class="o">=</span> <span class="n">background</span>
+
+				<span class="c"># Save data in HDF5 file:</span>
+				<span class="n">dset2</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">bck</span>
+				<span class="n">dset1</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">flux0</span>
+
+				<span class="c"># Add together images for sum-image:</span>
+				<span class="c">#replace(flux0, np.nan, 0)</span>
+				<span class="n">SUMIMAGE</span> <span class="o">+=</span> <span class="p">(</span><span class="n">flux0</span> <span class="o">-</span> <span class="n">bck</span><span class="p">)</span>
+
+				<span class="c"># Store FITS header for later use:</span>
+				<span class="n">hdr</span> <span class="o">=</span> <span class="n">hdu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+
+		<span class="n">SUMIMAGE</span> <span class="o">/=</span> <span class="n">numfiles</span>
+
+		<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Saving file...&quot;</span><span class="p">)</span>
+		<span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;sumimage&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">SUMIMAGE</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+		<span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+		<span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;cadenceno&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">cadenceno</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+		<span class="n">dset</span> <span class="o">=</span> <span class="n">hdf</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s">&#39;wcs&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">h5py</span><span class="o">.</span><span class="n">special_dtype</span><span class="p">(</span><span class="n">vlen</span><span class="o">=</span><span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">),</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+		<span class="n">dset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">WCS</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span><span class="o">.</span><span class="n">to_header_string</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+
+
+	<span class="c"># Setup logging:</span>
+	<span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
+	<span class="n">console</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+	<span class="n">console</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+	<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+	<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console</span><span class="p">)</span>
+	<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+	<span class="n">sector</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="n">camera</span> <span class="o">=</span> <span class="mi">1</span>
+	<span class="n">ccd</span> <span class="o">=</span> <span class="mi">1</span>
+
+	<span class="n">create_todo</span><span class="p">()</span>
+	<span class="n">create_catalog</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">)</span>
+	<span class="n">create_hdf5</span><span class="p">(</span><span class="n">camera</span><span class="p">,</span> <span class="n">ccd</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/TESS.jpg" alt="Logo"/>
+            </a></p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, TDA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

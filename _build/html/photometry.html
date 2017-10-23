@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The TASOC Photometry module &mdash; TDA CODE 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="TDA CODE 0.9 documentation" href="index.html" />
+    <link rel="prev" title="Project Summary" href="project.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-tasoc-photometry-module">
+<h1>The <code class="docutils literal"><span class="pre">TASOC</span> <span class="pre">Photometry</span></code> module<a class="headerlink" href="#the-tasoc-photometry-module" title="Permalink to this headline">¶</a></h1>
+<p>This module provides the basic photometry setup for TASOC</p>
+<div class="section" id="installation-instructions">
+<h2><strong>Installation instructions</strong><a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Go to the directory where you want the Python code to be installed and simply download it or clone it via <em>git</em> as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tasoc</span><span class="o">/</span><span class="n">photometry</span><span class="o">.</span><span class="n">git</span> <span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">All dependencies can be installed using:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Currently, this includes the following packages:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://pypi.python.org/pypi/six">six</a></li>
+<li><a class="reference external" href="https://docs.pytest.org/en/latest/">pytest</a></li>
+<li><a class="reference external" href="http://www.numpy.org/">numpy</a></li>
+<li><a class="reference external" href="https://www.scipy.org/">scipy</a></li>
+<li><a class="reference external" href="http://matplotlib.org/">matplotlib</a></li>
+<li><a class="reference external" href="http://www.astropy.org/">astropy</a></li>
+<li><a class="reference external" href="https://pypi.python.org/pypi/Bottleneck">Bottleneck</a></li>
+<li><a class="reference external" href="http://www.h5py.org/">h5py</a></li>
+<li><a class="reference external" href="http://scikit-image.org/">scikit-image (version 0.13.0)</a></li>
+<li><a class="reference external" href="http://scikit-learn.org/stable/">scikit-learn (version 0.19.0)</a></li>
+<li><a class="reference external" href="http://www.statsmodels.org/stable/index.html">statsmodels (version 0.8.0)</a></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">It is recommended to do this in a dedicated <a class="reference external" href="https://virtualenv.pypa.io/en/stable/">virtualenv</a> or similar.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-run-tests">
+<h2><strong>How to run tests</strong><a class="headerlink" href="#how-to-run-tests" title="Permalink to this headline">¶</a></h2>
+<p>You can test your installation by going to the root directory where you cloned the repository and run the command:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pytest</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-the-program">
+<h2><strong>Running the program</strong><a class="headerlink" href="#running-the-program" title="Permalink to this headline">¶</a></h2>
+<p>The next thing to do is to set up the directories where input data is stored, and where output data (e.g. lightcurves) should be put. This is done by setting the enviroment variables <code class="docutils literal"><span class="pre">TESSPHOT_INPUT</span></code> and <code class="docutils literal"><span class="pre">TESSPHOT_OUTPUT</span></code>.
+Depending on your operating system and shell this is done in slightly different ways.</p>
+<p>The photometry program can by run on a single star by running the program:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">run_tessphot</span><span class="o">.</span><span class="n">py</span> <span class="mi">143159</span>
+</pre></div>
+</div>
+<p>Here, the number gives the TIC identifier of the star. The program accepts various other command-line parameters - Try runnng:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">run_tessphot</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>This is very usefull for testing different methods and settings.</p>
+</div>
+<div class="section" id="contributing-to-the-code">
+<h2><strong>Contributing to the code</strong><a class="headerlink" href="#contributing-to-the-code" title="Permalink to this headline">¶</a></h2>
+<p>You are more than welcome to contribute to this code!
+Please contact <a class="reference external" href="mailto:rasmush&#37;&#52;&#48;phys&#46;au&#46;dk">Rasmus Handberg</a> or <a class="reference external" href="mailto:mikkelnl&#37;&#52;&#48;phys&#46;au&#46;dk">Mikkel Lund</a> if you wish to contribute.</p>
+<hr class="docutils" />
+<span class="target" id="module-prepare_photometry"></span><dl class="function">
+<dt id="prepare_photometry.create_todo">
+<code class="descclassname">prepare_photometry.</code><code class="descname">create_todo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/prepare_photometry.html#create_todo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#prepare_photometry.create_todo" title="Permalink to this definition">¶</a></dt>
+<dd><p>:param</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/TESS.jpg" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The <code class="docutils literal"><span class="pre">TASOC</span> <span class="pre">Photometry</span></code> module</a><ul>
+<li><a class="reference internal" href="#installation-instructions"><strong>Installation instructions</strong></a></li>
+<li><a class="reference internal" href="#how-to-run-tests"><strong>How to run tests</strong></a></li>
+<li><a class="reference internal" href="#running-the-program"><strong>Running the program</strong></a></li>
+<li><a class="reference internal" href="#contributing-to-the-code"><strong>Contributing to the code</strong></a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="project.html" title="previous chapter">Project Summary</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/photometry.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, TDA.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/photometry.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -6,7 +6,7 @@ python:
 # command to install dependencies
 install:
   - pip install -r requirements.txt
-  - git clone --branch master https://github.com/tasoc/photometry.git
+  - git clone --branch master https://github.com/tasoc/photometry.git tasoc/photometry
 script:
   - make html
 branches:

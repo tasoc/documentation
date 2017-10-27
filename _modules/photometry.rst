@@ -1,15 +1,12 @@
 photometry package
 ==================
 
-Subpackages
------------
 
 .. toctree::
 
     photometry.AperturePhotometry
 
-Submodules
-----------
+
 
 photometry.BasePhotometry module
 --------------------------------

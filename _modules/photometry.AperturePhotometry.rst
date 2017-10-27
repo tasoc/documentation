@@ -1,8 +1,6 @@
 photometry.AperturePhotometry package
 =====================================
 
-Submodules
-----------
 
 photometry.AperturePhotometry.k2p2v2 module
 -------------------------------------------

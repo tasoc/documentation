@@ -1,23 +1,13 @@
 photometry.AperturePhotometry package
 =====================================
 
+Submodules
+----------
 
-photometry.AperturePhotometry.k2p2v2 module
--------------------------------------------
+.. toctree::
 
-.. automodule:: photometry.AperturePhotometry.k2p2v2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-photometry.AperturePhotometry.photometry module
------------------------------------------------
-
-.. automodule:: photometry.AperturePhotometry.photometry
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   photometry.AperturePhotometry.k2p2v2
+   photometry.AperturePhotometry.photometry
 
 Module contents
 ---------------

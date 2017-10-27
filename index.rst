@@ -12,7 +12,7 @@ Contents:
    :maxdepth: 1
 
    project
-   /_modules/modules
+   _modules/modules
 
 
 Indices and tables

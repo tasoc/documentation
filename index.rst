@@ -12,7 +12,8 @@ Contents:
    :maxdepth: 1
 
    project
-   Photometry code <photometry> 
+   _modules/modules
+
 
 Indices and tables
 ==================

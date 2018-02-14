@@ -1,5 +1,5 @@
-photometry.utilities module
-===========================
+Utilities (``photometry.utilities``)
+====================================
 
 .. automodule:: photometry.utilities
     :members:

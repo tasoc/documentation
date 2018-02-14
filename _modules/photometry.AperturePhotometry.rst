@@ -1,5 +1,5 @@
-photometry.AperturePhotometry package
-=====================================
+Aperture Photometry (``photometry.AperturePhotometry``)
+========================================================
 
 Submodules
 ----------

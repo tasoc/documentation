@@ -30,7 +30,7 @@ Contents
 .. toctree::
    :maxdepth: 1
 
-   _modules/modules
+   photometry/modules
 
 
 Indices and tables

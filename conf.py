@@ -14,7 +14,6 @@
 
 import sys
 import os
-import shlex
 import mock
 import warnings
 
@@ -26,6 +25,8 @@ sys.path.insert(0, os.path.abspath('../photometry'))
 # Ignore some warnings that will just mess up the output:
 warnings.filterwarnings('ignore', category=FutureWarning)
 #warnings.filterwarnings('ignore', category=astropy.ConfigurationMissingWarning)
+warnings.filterwarnings('ignore', category=RuntimeWarning, message="numpy.dtype size changed")
+warnings.filterwarnings('ignore', category=RuntimeWarning, message="numpy.ufunc size changed")
 
 # -- General configuration ------------------------------------------------
 
@@ -84,7 +85,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'TDA CODE'
-copyright = u'2017, TDA'
+copyright = u'2018, TDA'
 author = u'TDA members'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -246,7 +247,7 @@ htmlhelp_basename = 'TDAdoc'
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+'papersize': 'a4paper',
 
 # The font size ('10pt', '11pt' or '12pt').
 #'pointsize': '10pt',

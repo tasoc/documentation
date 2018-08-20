@@ -31,6 +31,7 @@ Contents
    :maxdepth: 1
 
    photometry/modules
+   starclass/modules
 
 
 Indices and tables

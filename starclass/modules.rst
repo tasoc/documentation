@@ -1,5 +1,5 @@
 
-.. include:: ../../photometry/README.rst
+.. include:: ../../starclass/README.rst
 
 
 =========================================
@@ -7,14 +7,13 @@
 API
 ===
 
-Photometry
-----------
+Stellar Classification
+----------------------
 
 .. toctree::
 	:maxdepth: 4
 
-	photometry
-	prepare_photometry
+	starclass
    
 
 Command-line Utilities
@@ -22,8 +21,3 @@ Command-line Utilities
 
 .. toctree::
 	:maxdepth: 4
-
-	make_catalog
-	make_todo
-	run_tessphot
-	mpi_scheduler

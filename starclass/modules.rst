@@ -13,6 +13,7 @@ Stellar Classification
 .. toctree::
 	:maxdepth: 4
    
+	starclass
 
 Command-line Utilities
 ----------------------

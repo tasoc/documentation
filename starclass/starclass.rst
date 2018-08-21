@@ -8,4 +8,5 @@ Submodules
 
 .. toctree::
 
+	starclass.StellarClasses
 	starclass.BaseClassifier

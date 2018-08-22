@@ -1,10 +1,18 @@
 TASOC Photometry (``photometry`` package)
 =========================================
 
-.. automodule:: photometry
+Preparation functions
+---------------------
 
-Submodules
-----------
+.. toctree::
+
+	photometry.catalog
+	photometry.prepare
+	photometry.todolist
+
+
+Photometric methods
+-------------------
 
 .. toctree::
 
@@ -12,10 +20,19 @@ Submodules
 	photometry.AperturePhotometry
 	photometry.psf_photometry
 	photometry.linpsf_photometry
+
+	
+Helper classes and utilities
+----------------------------
+
+.. toctree::
+
 	photometry.psf
 	photometry.plots
+	photometry.image_motion
+	photometry.quality
 	photometry.utilities
-
+	
    
 Running the photometry (``tessphot``)
 -------------------------------------

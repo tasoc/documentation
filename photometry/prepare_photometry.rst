@@ -1,5 +1,5 @@
-prepare_photometry module
-=========================
+`prepare_photometry.py` command line utility
+============================================
 
 .. automodule:: prepare_photometry
     :members:

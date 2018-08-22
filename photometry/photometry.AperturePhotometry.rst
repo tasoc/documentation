@@ -1,5 +1,5 @@
 Aperture Photometry (``photometry.AperturePhotometry``)
-========================================================
+=======================================================
 
 .. automodule:: photometry.AperturePhotometry.photometry
 
@@ -8,8 +8,8 @@ Aperture Photometry (``photometry.AperturePhotometry``)
 	:undoc-members:
 	:show-inheritance:
 	
-K2P:superscript:2 (``photometry.AperturePhotometry.k2p2v2``)
-------------------------------------------------------------
+K2P\ :sup:`2` (``photometry.AperturePhotometry.k2p2v2``)
+--------------------------------------------------------
 
 .. automodule:: photometry.AperturePhotometry.k2p2v2
 	:members:

@@ -31,6 +31,7 @@ Helper classes and utilities
 	photometry.plots
 	photometry.image_motion
 	photometry.quality
+	photometry.taskmanager
 	photometry.utilities
 	
    

@@ -44,6 +44,7 @@ Contents
    :maxdepth: 1
 
    photometry/modules
+   corrections/modules
    starclass/modules
 
 

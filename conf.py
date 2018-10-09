@@ -21,6 +21,7 @@ import warnings
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../photometry'))
+sys.path.insert(0, os.path.abspath('../corrections'))
 sys.path.insert(0, os.path.abspath('../starclass'))
 
 # Ignore some warnings that will just mess up the output:

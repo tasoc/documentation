@@ -7,6 +7,7 @@ Correction methods
 .. toctree::
 
 	corrections.BaseCorrector
+	corrections.KASOCFilterCorrector
 
 	
 Helper classes and utilities

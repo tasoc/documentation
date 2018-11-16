@@ -1,0 +1,15 @@
+KASOC Filter (``corrections.KASOCFilterCorrector``)
+===================================================
+
+.. autoclass:: corrections.KASOCFilterCorrector
+	:undoc-members:
+	:inherited-members:
+
+	
+KASOC Filter
+------------
+	
+.. automodule:: corrections.kasoc_filter.kasoc_filter
+    :members:
+    :undoc-members:
+    :show-inheritance:

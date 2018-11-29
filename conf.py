@@ -14,7 +14,6 @@
 
 import sys
 import os
-import mock
 import warnings
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -44,10 +43,11 @@ def skip(app, what, name, obj, skip, options):
 def setup(app):
     app.connect("autodoc-skip-member", skip)
 
-MOCK_MODULES = ['mpi4py',]
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
-
+# This value contains a list of modules to be mocked up. This is useful when some
+# external dependencies are # not met at build time and break the building process.
+# You may only specify the root package of the dependencies themselves and omit
+# the sub-modules:
+autodoc_mock_imports = ['mpi4py','tensorflow']
 
 # ------------------------------------------------------------------------
 
@@ -223,7 +223,7 @@ html_static_path = ['_static']
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
 # base URL from which the finished HTML is served.
-#html_use_opensearch = ''
+html_use_opensearch = 'https://tasoc.dk/code/'
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
 #html_file_suffix = None

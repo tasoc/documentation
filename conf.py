@@ -47,7 +47,7 @@ def setup(app):
 # external dependencies are # not met at build time and break the building process.
 # You may only specify the root package of the dependencies themselves and omit
 # the sub-modules:
-autodoc_mock_imports = ['mpi4py','tensorflow']
+autodoc_mock_imports = ['mpi4py','tensorflow','keras']
 
 # ------------------------------------------------------------------------
 

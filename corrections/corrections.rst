@@ -7,6 +7,7 @@ Correction methods
 .. toctree::
 
 	corrections.BaseCorrector
+	corrections.EnsembleCorrector
 	corrections.KASOCFilterCorrector
 
 	
@@ -15,5 +16,5 @@ Helper classes and utilities
 
 .. toctree::
 
-#	corrections.plots
-#	corrections.utilities
+	corrections.taskmanager
+	corrections.utilities

@@ -1,6 +1,8 @@
 BaseCorrector (``corrections.BaseCorrector``)
 =============================================
 
+.. automodule:: corrections.BaseCorrector
+
 .. autoclass:: corrections.BaseCorrector
 	:undoc-members:
 	:inherited-members:

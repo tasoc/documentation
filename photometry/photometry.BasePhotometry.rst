@@ -7,7 +7,7 @@ BasePhotometry (``photometry.BasePhotometry``)
 
 Photometry Status (``photometry.STATUS``)
 =========================================
-	
+
 .. autoclass:: photometry.STATUS
 	:undoc-members:
 	:inherited-members:

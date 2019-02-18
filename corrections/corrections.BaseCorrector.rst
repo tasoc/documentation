@@ -6,6 +6,7 @@ BaseCorrector (``corrections.BaseCorrector``)
 .. autoclass:: corrections.BaseCorrector
 	:noindex:
 	:undoc-members:
+	:show-inheritance:
 	:inherited-members:
 
 Correction Status (``corrections.STATUS``)

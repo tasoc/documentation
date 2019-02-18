@@ -6,6 +6,7 @@ KASOC Filter (``corrections.KASOCFilterCorrector``)
 .. autoclass:: corrections.KASOCFilterCorrector
 	:noindex:
 	:undoc-members:
+	:show-inheritance:
 	:inherited-members:
 
 	

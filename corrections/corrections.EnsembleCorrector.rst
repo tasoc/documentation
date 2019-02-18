@@ -6,6 +6,7 @@ Ensemble Corrector (``corrections.EnsembleCorrector``)
 
 .. autoclass:: corrections.EnsembleCorrector
 	:undoc-members:
+	:show-inheritance:
 	:inherited-members:
 
 .. automodule:: corrections.ensemble

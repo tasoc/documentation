@@ -1,9 +1,10 @@
-====================================
+####################################
 Welcome to TDA's code documentation!
-====================================
+####################################
 
+*************************************************************
 Project Summary: "TESS Data for Asteroseismology" (or *T'DA*)
--------------------------------------------------------------
+*************************************************************
 
 To join the group go to `tasoc.dk <https://tasoc.dk/>`_ and sign up for CA-1,
 you can then via our `wiki <https://tasoc.dk/wg0/>`_ read more about the work of the group and how to contribute.
@@ -12,7 +13,7 @@ If you have any questions about the group, the work, or how to contribute, do no
 to contact the working group chairs: `Mikkel Lund <mikkelnl@phys.au.dk>`_ and `Rasmus Handberg <rasmush@phys.au.dk>`_.
 
 Goals
------
+=====
   * Do basic calibrations of raw data.
   * Define stellar apertures and extract flux.
   * Correct light curves for instrumental features.
@@ -20,7 +21,7 @@ Goals
   
 
 Policies and licenses
----------------------
+=====================
 All software and data products developed under T'DA will be open-access.
 
 We request that, if a specific paper is based on published data analysis or stellar classification for a specific target or group of targets done under T'DA, the relevant T'DA Coordinated papers and papers that significantly (as evaluated by the T'DA Steering Committee) contribute to these are cited in the work. This mean that if people use results from T'DA then they should cite the relevant coordinated paper, as well as papers that contribute
@@ -37,19 +38,25 @@ The coordinated papers are seen as "first-light" papers, which means that papers
 
 If you have any questions regarding the T'DA policies, please contact the working group chairs: `Mikkel Lund <mikkelnl@phys.au.dk>`_ and `Rasmus Handberg <rasmush@phys.au.dk>`_.
 
+Contributing to the code
+========================
+You are more than welcome to contribute to this code!
+Please contact `Rasmus Handberg <rasmush@phys.au.dk>`_ or `Mikkel Lund <mikkelnl@phys.au.dk>`_ if you wish to contribute.
+
 Contents
---------
+========
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
    photometry/modules
    corrections/modules
+   dataval/modules
    starclass/modules
 
 
 Indices and tables
-------------------
+==================
 
 * :ref:`genindex`
 * :ref:`modindex`

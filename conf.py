@@ -22,6 +22,7 @@ import warnings
 sys.path.insert(0, os.path.abspath('../photometry'))
 sys.path.insert(0, os.path.abspath('../corrections'))
 sys.path.insert(0, os.path.abspath('../starclass'))
+sys.path.insert(0, os.path.abspath('../dataval'))
 
 # Ignore some warnings that will just mess up the output:
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -65,6 +66,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
+	'sphinx.ext.imgconverter'
 ]
 
 [extensions]

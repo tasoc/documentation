@@ -1,7 +1,6 @@
 
 .. include:: ../../photometry/README.rst
 
-
 =========================================
 
 Module Overview
@@ -24,3 +23,4 @@ Command-line Utilities
 	make_todo
 	run_tessphot
 	mpi_scheduler
+	run_ffimovie

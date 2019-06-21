@@ -22,5 +22,5 @@ Command-line Utilities
 	prepare_photometry
 	make_todo
 	run_tessphot
-	mpi_scheduler
+	run_tessphot_mpi
 	run_ffimovie

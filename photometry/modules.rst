@@ -19,7 +19,7 @@ Command-line Utilities
 	:maxdepth: 4
 
 	make_catalog
-	prepare_photometry
+	run_prepare_photometry
 	make_todo
 	run_tessphot
 	run_tessphot_mpi

@@ -7,10 +7,10 @@ Project Summary: "TESS Data for Asteroseismology" (or *T'DA*)
 *************************************************************
 
 To join the group go to `tasoc.dk <https://tasoc.dk/>`_ and sign up for CA-1,
-you can then via our `wiki <https://tasoc.dk/wg0/>`_ read more about the work of the group and how to contribute.
+you can then via our `wiki <https://tasoc.dk/tda/>`_ read more about the work of the group and how to contribute.
 
 If you have any questions about the group, the work, or how to contribute, do not hesitate
-to contact the working group chairs: `Mikkel Lund <mikkelnl@phys.au.dk>`_ and `Rasmus Handberg <rasmush@phys.au.dk>`_.
+to contact the working group chairs: `Rasmus Handberg <rasmush@phys.au.dk>`_ and `Derek Buzasi <dbuzasi@fgcu.edu>`_.
 
 Goals
 =====
@@ -41,7 +41,7 @@ If you have any questions regarding the T'DA policies, please contact the workin
 Contributing to the code
 ========================
 You are more than welcome to contribute to this code!
-Please contact `Rasmus Handberg <rasmush@phys.au.dk>`_ or `Mikkel Lund <mikkelnl@phys.au.dk>`_ if you wish to contribute.
+Please contact `Rasmus Handberg <rasmush@phys.au.dk>`_ or `Derek Buzasi <dbuzasi@fgcu.edu>`_ if you wish to contribute.
 
 Contents
 ========

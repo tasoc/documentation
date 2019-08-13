@@ -45,7 +45,7 @@ def setup(app):
     app.connect("autodoc-skip-member", skip)
 
 # This value contains a list of modules to be mocked up. This is useful when some
-# external dependencies are # not met at build time and break the building process.
+# external dependencies are not met at build time and break the building process.
 # You may only specify the root package of the dependencies themselves and omit
 # the sub-modules:
 autodoc_mock_imports = ['mpi4py','tensorflow','keras']
@@ -89,7 +89,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'TDA CODE'
-copyright = u'2018, TDA'
+copyright = u'2019, TDA'
 author = u'TDA members'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -116,7 +116,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', '_modules/mpi_scheduler.rst']
+exclude_patterns = ['_build']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.

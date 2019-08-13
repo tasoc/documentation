@@ -15,6 +15,8 @@
 import sys
 import os
 import warnings
+import matplotlib
+matplotlib.use('Agg', warn=False)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -48,7 +50,7 @@ def setup(app):
 # external dependencies are not met at build time and break the building process.
 # You may only specify the root package of the dependencies themselves and omit
 # the sub-modules:
-autodoc_mock_imports = ['mpi4py','tensorflow','keras','_tkinter']
+autodoc_mock_imports = ['mpi4py','tensorflow','keras']
 
 # ------------------------------------------------------------------------
 

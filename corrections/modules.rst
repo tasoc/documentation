@@ -20,3 +20,5 @@ Command-line Utilities
 	:maxdepth: 4
 
 	run_tesscorr
+	run_tesscorr_mpi
+	run_cbvprep

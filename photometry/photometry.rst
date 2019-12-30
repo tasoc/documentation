@@ -18,6 +18,7 @@ Photometric methods
 
 	photometry.BasePhotometry
 	photometry.AperturePhotometry
+	photometry.HaloPhotometry
 	photometry.psf_photometry
 	photometry.linpsf_photometry
 

@@ -17,6 +17,7 @@ Helper classes and utilities
 
 .. toctree::
 
+	corrections.noise_model
 	corrections.taskmanager
 	corrections.plots
 	corrections.quality

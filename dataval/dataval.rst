@@ -6,11 +6,13 @@ Data Validation
 
 .. toctree::
 
-	dataval.quality
+	dataval.dataval
 
 Helper classes and utilities
 ----------------------------
 
 .. toctree::
 
+	dataval.noise_model
+	dataval.quality
 	dataval.plots

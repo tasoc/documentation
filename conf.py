@@ -15,8 +15,8 @@
 import sys
 import os
 import warnings
-import matplotlib
-matplotlib.use('Agg', warn=False)
+import matplotlib.pyplot as plt
+plt.switch_backend('Agg')
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -68,13 +68,11 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-	'sphinx.ext.imgconverter'
+    'sphinx.ext.imgconverter',
+    #'sphinxcontrib.programoutput'
 ]
 
 [extensions]
-todo_include_todos=True
-
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -91,7 +89,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'TDA CODE'
-copyright = u'2019, TDA'
+copyright = u'2020, TDA'
 author = u'TDA members'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -145,7 +143,7 @@ pygments_style = 'sphinx'
 #keep_warnings = False
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+todo_include_todos = True
 
 
 # -- Options for HTML output ----------------------------------------------
@@ -161,6 +159,25 @@ html_theme = 'sphinx_rtd_theme'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #html_theme_options = {}
+
+# sphinx_rtd_theme:
+html_theme_options = {
+    'display_version': False,
+    'logo_only': True,
+    'style_nav_header_background': '#042037'
+}
+
+# Alabaster:
+#html_theme_options = {
+#	'logo': 'tda.png',
+#	'touch_icon': 'tda.png',
+#	'github_user': 'tasoc',
+#	'github_repo': 'photometry',
+#	'page_width': '1200px',
+#	'sidebar_width': '300px',
+#	'fixed_sidebar': True,
+#	'sidebar_link_underscore': '#fff'
+#}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []

@@ -1,3 +1,9 @@
+# Paths specific to this repo:
+photometry
+dataval
+corrections
+starclass
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

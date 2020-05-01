@@ -69,7 +69,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.imgconverter',
-    #'sphinxcontrib.programoutput'
+    'sphinxcontrib.programoutput'
 ]
 
 [extensions]

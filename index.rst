@@ -47,12 +47,13 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 3
+	:maxdepth: 3
+	:numbered: 2
 
-   photometry/modules
-   corrections/modules
-   dataval/modules
-   starclass/modules
+	photometry/modules
+	corrections/modules
+	dataval/modules
+	starclass/modules
 
 
 Indices and tables

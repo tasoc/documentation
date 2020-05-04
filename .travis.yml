@@ -1,12 +1,19 @@
 language: python
+cache: pip
+os: linux
+dist: xenial
 python:
-  - "2.7"
   - "3.5"
   - "3.6"
+  - "3.7"
+  - "3.8"
 # command to install dependencies
 install:
+  - GIT_LFS_SKIP_SMUDGE=1 git clone --branch=devel --single-branch https://github.com/tasoc/photometry.git ../photometry
+  - GIT_LFS_SKIP_SMUDGE=1 git clone --branch=devel --single-branch https://github.com/tasoc/dataval.git ../dataval
+  - GIT_LFS_SKIP_SMUDGE=1 git clone --branch=devel --single-branch https://github.com/tasoc/corrections.git ../corrections
+  - GIT_LFS_SKIP_SMUDGE=1 git clone --branch=devel --single-branch https://github.com/tasoc/starclass.git ../starclass
   - pip install -r requirements.txt
-  - git clone --branch=devel https://github.com/tasoc/photometry.git ../photometry
 script:
   - make html
 branches:

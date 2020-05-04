@@ -26,6 +26,19 @@ sys.path.insert(0, os.path.abspath('../corrections'))
 sys.path.insert(0, os.path.abspath('../starclass'))
 sys.path.insert(0, os.path.abspath('../dataval'))
 
+# Attempt to create symlinks if they don't already exist:
+try:
+	if not os.path.exists('photometry'):
+		os.symlink('../photometry/docs/', 'photometry', target_is_directory=True)
+	if not os.path.exists('dataval'):
+		os.symlink('../dataval/docs/', 'dataval', target_is_directory=True)
+	if not os.path.exists('corrections'):
+		os.symlink('../corrections/docs/', 'corrections', target_is_directory=True)
+	if not os.path.exists('starclass'):
+		os.symlink('../starclass/docs/', 'starclass', target_is_directory=True)
+except OSError:
+	raise OSError("Could not create symlinks. Please create them manually.")
+
 # Ignore some warnings that will just mess up the output:
 warnings.filterwarnings('ignore', category=FutureWarning)
 #warnings.filterwarnings('ignore', category=astropy.ConfigurationMissingWarning)
@@ -39,12 +52,12 @@ autodoc_member_order = 'groupwise'
 
 # Added to include __init__ files
 def skip(app, what, name, obj, skip, options):
-    if name == "__init__":
-        return False
-    return skip
+	if name == "__init__":
+		return False
+	return skip
 
 def setup(app):
-    app.connect("autodoc-skip-member", skip)
+	app.connect("autodoc-skip-member", skip)
 
 # This value contains a list of modules to be mocked up. This is useful when some
 # external dependencies are not met at build time and break the building process.
@@ -61,15 +74,15 @@ autodoc_mock_imports = ['mpi4py','tensorflow','keras']
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.todo',
-    'sphinx.ext.imgconverter',
-    'sphinxcontrib.programoutput'
+	'sphinx.ext.autodoc',
+	'sphinx.ext.mathjax',
+	'sphinx.ext.viewcode',
+	'sphinx.ext.intersphinx',
+	'sphinx.ext.autosummary',
+	'sphinx.ext.napoleon',
+	'sphinx.ext.todo',
+	'sphinx.ext.imgconverter',
+	'sphinxcontrib.programoutput'
 ]
 
 [extensions]
@@ -162,9 +175,9 @@ html_theme = 'sphinx_rtd_theme'
 
 # sphinx_rtd_theme:
 html_theme_options = {
-    'display_version': False,
-    'logo_only': True,
-    'style_nav_header_background': '#042037'
+	'display_version': False,
+	'logo_only': True,
+	'style_nav_header_background': '#042037'
 }
 
 # Alabaster:
@@ -206,7 +219,7 @@ html_static_path = ['_static']
 # These paths are either relative to html_static_path
 # or fully qualified paths (eg. https://...)
 html_css_files = [
-    'tasoc.css',
+	'tasoc.css',
 ]
 
 # Add any extra paths that contain custom files (such as robots.txt or
@@ -322,8 +335,8 @@ latex_domain_indices = False
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'tasoctdacode', u'TASOC T\'DA Code Documentation',
-     [author], 1)
+	(master_doc, 'tasoctdacode', u'TASOC T\'DA Code Documentation',
+	 [author], 1)
 ]
 
 # If true, show URL addresses after external links.

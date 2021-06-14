@@ -4,6 +4,9 @@ dataval
 corrections
 starclass
 
+# Visual Studio Code
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -68,7 +71,8 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+_build/
+_templates/
 
 # PyBuilder
 target/
@@ -105,7 +109,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-
-#Sphinx
-_build
-_templates

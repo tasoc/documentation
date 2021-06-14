@@ -15,37 +15,64 @@
 import sys
 import os
 import warnings
+import subprocess
+import shutil
+from datetime import datetime
 import matplotlib.pyplot as plt
 plt.switch_backend('Agg')
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('../photometry'))
-sys.path.insert(0, os.path.abspath('../corrections'))
-sys.path.insert(0, os.path.abspath('../starclass'))
-sys.path.insert(0, os.path.abspath('../dataval'))
+# Just a wrapper around os.symlink that sometimes works better
+# on Windows OS where symlink creation depends on user privileges:
+def symlink(target, name, target_is_directory=True):
+	retry_subprocess = False
+	try:
+		os.symlink(target, name, target_is_directory=target_is_directory)
+	except OSError:
+		retry_subprocess = True
 
-# Attempt to create symlinks if they don't already exist:
-try:
-	if not os.path.exists('photometry'):
-		os.symlink('../photometry/docs/', 'photometry', target_is_directory=True)
-	if not os.path.exists('dataval'):
-		os.symlink('../dataval/docs/', 'dataval', target_is_directory=True)
-	if not os.path.exists('corrections'):
-		os.symlink('../corrections/docs/', 'corrections', target_is_directory=True)
-	if not os.path.exists('starclass'):
-		os.symlink('../starclass/docs/', 'starclass', target_is_directory=True)
-except OSError:
-	raise OSError("Could not create symlinks. Please create them manually.")
+	if retry_subprocess:
+		if os.name == 'nt':
+			cmd = ['mklink']
+			if target_is_directory:
+				cmd.append('/D')
+			cmd += [name, target]
+			subprocess.call(cmd, shell=True)
+		else:
+			raise RuntimeError("Could not create symlinks. Please create them manually.")
+
+# -- Set to package dependencies and fix static images in subpackages -----------------------------
+
+_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+for subpackage in ('photometry', 'dataval', 'corrections', 'starclass'):
+	# Make sure that the subpackage exists:
+	realpath = os.path.join(_dir, subpackage, 'docs')
+	if not os.path.isdir(realpath):
+		raise RuntimeError(f"Subpackage {subpackage} not found")
+
+	# If extensions (or modules to document with autodoc) are in another directory,
+	# add these directories to sys.path here. If the directory is relative to the
+	# documentation root, use os.path.abspath to make it absolute, like shown here.
+	if os.path.join(_dir, subpackage) not in sys.path:
+		sys.path.insert(0, os.path.join(_dir, subpackage))
+
+	# Attempt to create symlinks if they don't already exist:
+	if not os.path.exists(subpackage):
+		symlink(os.path.join(_dir, subpackage, 'docs'), subpackage, target_is_directory=True)
+
+	# Make copy of the _static directory to catch the problem of images in README.rst
+	# that would otherwise point to the wrong path:
+	# TODO: Cleanup the fake path after use
+	realstatic = os.path.join(subpackage, '_static')
+	if os.path.isdir(realstatic):
+		fakestatic = os.path.join(subpackage, 'docs', '_static')
+		if os.path.isdir(fakestatic):
+			shutil.rmtree(fakestatic)
+		shutil.copytree(realstatic, fakestatic)
 
 # Ignore some warnings that will just mess up the output:
 warnings.filterwarnings('ignore', category=FutureWarning)
-#warnings.filterwarnings('ignore', category=astropy.ConfigurationMissingWarning)
-warnings.filterwarnings('ignore', category=RuntimeWarning, message="numpy.dtype size changed")
-warnings.filterwarnings('ignore', category=RuntimeWarning, message="numpy.ufunc size changed")
 
-# -- General configuration ------------------------------------------------
+# -- General configuration ------------------------------------------------------------------------
 
 # Sort members by type
 autodoc_member_order = 'groupwise'
@@ -63,9 +90,9 @@ def setup(app):
 # external dependencies are not met at build time and break the building process.
 # You may only specify the root package of the dependencies themselves and omit
 # the sub-modules:
-autodoc_mock_imports = ['mpi4py','tensorflow','keras']
+autodoc_mock_imports = ['mpi4py','tensorflow','xgboost']
 
-# ------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
@@ -82,6 +109,7 @@ extensions = [
 	'sphinx.ext.napoleon',
 	'sphinx.ext.todo',
 	'sphinx.ext.imgconverter',
+	'sphinx.ext.coverage',
 	'sphinxcontrib.programoutput'
 ]
 
@@ -101,9 +129,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u"TASOC Pipeline"
-copyright = u"2020, T'DA"
-author = u"T'DA members"
+project = 'TASOC Pipeline'
+copyright = datetime.now().strftime("%Y") + ", T'DA"
+author = "T'DA members"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -159,7 +187,7 @@ pygments_style = 'sphinx'
 todo_include_todos = True
 
 
-# -- Options for HTML output ----------------------------------------------
+# -- Options for HTML output ----------------------------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -285,7 +313,7 @@ html_use_opensearch = 'https://tasoc.dk/code/'
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'TDAdoc'
 
-# -- Options for LaTeX output ---------------------------------------------
+# -- Options for LaTeX output ---------------------------------------------------------------------
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
@@ -330,7 +358,7 @@ latex_show_urls = 'True'
 latex_domain_indices = False
 
 
-# -- Options for manual page output ---------------------------------------
+# -- Options for manual page output ---------------------------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
@@ -343,7 +371,7 @@ man_pages = [
 #man_show_urls = False
 
 
-# -- Options for Texinfo output -------------------------------------------
+# -- Options for Texinfo output -------------------------------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
@@ -365,3 +393,7 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+# -- Options for Coverage output ------------------------------------------------------------------
+
+coverage_show_missing_items = True

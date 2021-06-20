@@ -51,7 +51,7 @@ Contents
 	:numbered: 2
 
 	photometry/index
-	corrections/modules
+	corrections/index
 	dataval/index
 	starclass/index
 

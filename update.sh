@@ -15,9 +15,11 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 	fi
 	if [[ ! -L "$SUBPACKAGE" ]]; then
 		echo "GIT PULL $SUBPACKAGE"
+		git status $SUBPACKAGE
 		git pull -f --no-rebase --allow-unrelated-histories $SUBPACKAGE
 	fi
-	cat $SUBPACKAGE/requirements.txt | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt
+	cat "$SUBPACKAGE/requirements.txt" | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt
+	cat requirements.tmp.txt
 	pip install -r requirements.tmp.txt --disable-pip-version-check
 	rm requirements.tmp.txt
 done

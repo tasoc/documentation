@@ -2,7 +2,7 @@
 set -e
 
 # Start virtual env:
-source venv/bin/activate
+#source venv/bin/activate
 
 MOCKPACKAGES="^tensorflow|^xgboost|^mpi4py"
 
@@ -14,7 +14,7 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 		exit 2
 	fi
 	if [[ ! -L "$SUBPACKAGE" ]]; then
-		echo "GIT PULL"
+		echo "GIT PULL $SUBPACKAGE"
 		git pull -f $SUBPACKAGE
 	fi
 	cat $SUBPACKAGE/requirements.txt | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt

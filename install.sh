@@ -1,10 +1,10 @@
 #!/bin/bash -e
 set -e
 
-mkdir -p venv
-find venv -mindepth 1 -delete
-#virtualenv -p python3 venv/
-python -m venv venv/
+#mkdir -p venv
+#find venv -mindepth 1 -delete
+##virtualenv -p python3 venv/
+#python -m venv venv/
 
 mkdir -p photometry
 find photometry -mindepth 1 -delete

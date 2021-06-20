@@ -29,7 +29,7 @@ done
 
 # Update documentation code:
 pwd
-git pull -f
+#git pull -f
 pip install --upgrade -r requirements.txt -q --disable-pip-version-check
 
 # Delete old builds:
@@ -43,7 +43,7 @@ sphinx-build -a -W --no-color -b html -d _build/doctrees . _build/html
 #make latexpdf SPHINXOPTS="-q" LATEXMKOPTS="-silent -quiet" LATEXOPTS="-interaction=nonstopmode"
 
 # Make sure generated files have correct permissions:
-chgrp -R kasoc _build/html
-chmod -R 0750 _build/html
+#chgrp -R kasoc _build/html
+#chmod -R 0750 _build/html
 #chgrp kasoc _build/latex/*.pdf
 #chmod 0640 _build/latex/*.pdf

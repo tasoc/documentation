@@ -15,7 +15,7 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 	fi
 	if [[ ! -L "$SUBPACKAGE" ]]; then
 		echo "GIT PULL $SUBPACKAGE"
-		git pull -f $SUBPACKAGE
+		git pull -f --allow-unrelated-histories $SUBPACKAGE
 	fi
 	cat $SUBPACKAGE/requirements.txt | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt
 	pip install -r requirements.tmp.txt --disable-pip-version-check
@@ -24,7 +24,7 @@ done
 
 # Update documentation code:
 pwd
-git pull -f
+git pull --allow-unrelated-histories -f
 pip install --upgrade -r requirements.txt -q --disable-pip-version-check
 
 # Delete old builds:

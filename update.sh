@@ -4,10 +4,11 @@ set -e
 # Start virtual env:
 #source venv/bin/activate
 
-MOCKPACKAGES="^tensorflow|^xgboost|^mpi4py"
+MOCKPACKAGES="^numpy|^tensorflow|^xgboost|^mpi4py"
 
 # Update all the dependencies:
 for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
+	echo "****************************************************"
 	echo "Processing sub-package: $SUBPACKAGE"
 	if [[ ! -d "../$SUBPACKAGE" ]]; then
 		echo "DOES NOT EXIST"
@@ -20,6 +21,7 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 	git pull -f
 
 	# Install requirements for sub-package:
+	grep "numpy" requirements.txt | xargs -I {} pip install "{}"
 	cat requirements.txt | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt
 	pip install -q -r requirements.tmp.txt --disable-pip-version-check
 	rm requirements.tmp.txt
@@ -28,6 +30,7 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 done
 
 # Update documentation code:
+echo "****************************************************"
 pwd
 #git pull -f
 pip install --upgrade -r requirements.txt -q --disable-pip-version-check

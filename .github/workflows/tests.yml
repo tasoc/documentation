@@ -35,13 +35,5 @@ jobs:
           ${{ runner.os }}-pip-py3.7-
           ${{ runner.os }}-pip-
 
-    #- name: Setup Git
-    #  run: |
-    #    git config --global user.name "GitHib Action"
-    #    git config --global user.email "github-action@users.noreply.github.com"
-
-    - name: Install dependencies
+    - name: Build documentation
       run: ./install.sh
-
-    - name: Build Sphinx documentation
-      run: ./update.sh

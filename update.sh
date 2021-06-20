@@ -1,9 +1,6 @@
 #!/bin/bash -e
 set -e
 
-# Start virtual env:
-#source venv/bin/activate
-
 MOCKPACKAGES="^numpy|^tensorflow|^xgboost|^mpi4py"
 
 # Update all the dependencies:
@@ -20,6 +17,7 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 	git status
 	git pull -f
 
+	# Ensure numpy is the first thing to be installed:
 	if [ "$SUBPACKAGE" = "photometry" ]; then
 		grep "numpy" requirements.txt | xargs -I {} pip install "{}" --disable-pip-version-check
 	fi
@@ -34,8 +32,6 @@ done
 
 # Update documentation code:
 echo "****************************************************"
-
-#git pull -f
 pip install --upgrade -r requirements.txt -q --disable-pip-version-check
 
 # Delete old builds:
@@ -46,10 +42,5 @@ echo "Creating HTML documentation..."
 sphinx-build -a -W --no-color -b html -d _build/doctrees . _build/html
 
 #echo "Creating LaTeX documentation..."
+#sphinx-build -a -W --no-color -b latexpdf -d _build/doctrees . _build/latexpdf
 #make latexpdf SPHINXOPTS="-q" LATEXMKOPTS="-silent -quiet" LATEXOPTS="-interaction=nonstopmode"
-
-# Make sure generated files have correct permissions:
-#chgrp -R kasoc _build/html
-#chmod -R 0750 _build/html
-#chgrp kasoc _build/latex/*.pdf
-#chmod 0640 _build/latex/*.pdf

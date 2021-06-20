@@ -18,8 +18,6 @@ import warnings
 import subprocess
 import shutil
 from datetime import datetime
-import matplotlib.pyplot as plt
-plt.switch_backend('Agg')
 
 # Just a wrapper around os.symlink that sometimes works better
 # on Windows OS where symlink creation depends on user privileges:
@@ -44,27 +42,27 @@ def symlink(target, name, target_is_directory=True):
 
 _dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 for subpackage in ('photometry', 'dataval', 'corrections', 'starclass'):
-	# Make sure that the subpackage exists:
-	realpath = os.path.join(_dir, subpackage, 'docs')
-	if not os.path.isdir(realpath):
-		raise RuntimeError(f"Subpackage {subpackage} not found")
+	# Attempt to create symlinks if they don't already exist:
+	if not os.path.exists(subpackage):
+		# Make sure that the subpackage exists:
+		realpath = os.path.join(_dir, subpackage)
+		if not os.path.isdir(realpath):
+			raise RuntimeError(f"Subpackage {subpackage} not found")
+
+		symlink(realpath, subpackage, target_is_directory=True)
 
 	# If extensions (or modules to document with autodoc) are in another directory,
 	# add these directories to sys.path here. If the directory is relative to the
 	# documentation root, use os.path.abspath to make it absolute, like shown here.
-	if os.path.join(_dir, subpackage) not in sys.path:
-		sys.path.insert(0, os.path.join(_dir, subpackage))
-
-	# Attempt to create symlinks if they don't already exist:
-	if not os.path.exists(subpackage):
-		symlink(os.path.join(_dir, subpackage, 'docs'), subpackage, target_is_directory=True)
+	if subpackage not in sys.path:
+		sys.path.insert(0, subpackage)
 
 	# Make copy of the _static directory to catch the problem of images in README.rst
 	# that would otherwise point to the wrong path:
 	# TODO: Cleanup the fake path after use
-	realstatic = os.path.join(subpackage, '_static')
+	realstatic = os.path.join(subpackage, 'docs', '_static')
 	if os.path.isdir(realstatic):
-		fakestatic = os.path.join(subpackage, 'docs', '_static')
+		fakestatic = os.path.join(subpackage, 'docs', 'docs', '_static')
 		if os.path.isdir(fakestatic):
 			shutil.rmtree(fakestatic)
 		shutil.copytree(realstatic, fakestatic)
@@ -90,7 +88,7 @@ def setup(app):
 # external dependencies are not met at build time and break the building process.
 # You may only specify the root package of the dependencies themselves and omit
 # the sub-modules:
-autodoc_mock_imports = ['mpi4py','tensorflow','xgboost']
+autodoc_mock_imports = ['mpi4py', 'tensorflow', 'xgboost']
 
 # -------------------------------------------------------------------------------------------------
 

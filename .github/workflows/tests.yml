@@ -35,6 +35,10 @@ jobs:
           ${{ runner.os }}-pip-py3.7-
           ${{ runner.os }}-pip-
 
+    - uses: oleksiyrudenko/gha-git-credentials@v2.1
+      with:
+        global: true
+
     - name: Install dependencies
       run: ./install.sh
 

@@ -52,7 +52,7 @@ Contents
 
 	photometry/docs/index
 	corrections/docs/modules
-	dataval/docs/modules
+	dataval/docs/index
 	starclass/docs/index
 
 

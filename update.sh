@@ -9,24 +9,27 @@ MOCKPACKAGES="^tensorflow|^xgboost|^mpi4py"
 # Update all the dependencies:
 for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 	echo "Processing sub-package: $SUBPACKAGE"
-	if [[ ! -d "$SUBPACKAGE" ]]; then
+	if [[ ! -d "../$SUBPACKAGE" ]]; then
 		echo "DOES NOT EXIST"
 		exit 2
 	fi
-	if [[ ! -L "$SUBPACKAGE" ]]; then
-		echo "GIT PULL $SUBPACKAGE"
-		git status $SUBPACKAGE
-		git pull -f --no-rebase --allow-unrelated-histories $SUBPACKAGE
-	fi
-	cat "$SUBPACKAGE/requirements.txt" | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt
-	cat requirements.tmp.txt
-	pip install -r requirements.tmp.txt --disable-pip-version-check
+
+	# Pull latest Git repo:
+	cd "../$SUBPACKAGE"
+	git status
+	git pull -f
+
+	# Install requirements for sub-package:
+	cat requirements.txt | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt
+	pip install -q -r requirements.tmp.txt --disable-pip-version-check
 	rm requirements.tmp.txt
+
+	cd ../documentation
 done
 
 # Update documentation code:
 pwd
-git pull --no-rebase --allow-unrelated-histories -f
+git pull -f
 pip install --upgrade -r requirements.txt -q --disable-pip-version-check
 
 # Delete old builds:

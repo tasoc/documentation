@@ -20,9 +20,12 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 	git status
 	git pull -f
 
+	if [[ "$SUBPACKAGE" == "photometry" ]; then
+		grep "numpy" requirements.txt | xargs -I {} pip install "{}" --disable-pip-version-check
+	fi
+
 	# Install requirements for sub-package:
-	grep "numpy" requirements.txt | xargs -I {} pip install "{}"
-	cat requirements.txt | grep -v -E "$MOCKPACKAGES"  > requirements.tmp.txt
+	grep -v -E "$MOCKPACKAGES" requirements.txt > requirements.tmp.txt
 	pip install -q -r requirements.tmp.txt --disable-pip-version-check
 	rm requirements.tmp.txt
 
@@ -31,7 +34,7 @@ done
 
 # Update documentation code:
 echo "****************************************************"
-pwd
+
 #git pull -f
 pip install --upgrade -r requirements.txt -q --disable-pip-version-check
 

@@ -36,7 +36,7 @@ the T'DA members involved in this treatment should be offered co-authorship on t
 
 The coordinated papers are seen as "first-light" papers, which means that papers dealing with any of the tasks covered by the T'DA Coordinated Activity should only be published using bona fide TESS data or using the T'DA pipeline(s) (except for components to the pipeline(s) that were directly contributed by the authors) after the publication of the relevant coordinated paper(s). In other words, any paper dealing with T'DA related tasks can be published before the coordinated paper(s) as long as bona fide TESS data is not used (but using instead, e.g., simulated data or data from another mission).
 
-If you have any questions regarding the T'DA policies, please contact the working group chairs: `Mikkel Lund <mikkelnl@phys.au.dk>`_ and `Rasmus Handberg <rasmush@phys.au.dk>`_.
+If you have any questions regarding the T'DA policies, please contact the working group chairs: `Rasmus Handberg <rasmush@phys.au.dk>`_ and `Derek Buzasi <dbuzasi@fgcu.edu>`_.
 
 Contributing to the code
 ========================

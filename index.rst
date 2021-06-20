@@ -50,7 +50,7 @@ Contents
 	:maxdepth: 3
 	:numbered: 2
 
-	photometry/modules
+	photometry/index
 	corrections/modules
 	dataval/modules
 	starclass/index

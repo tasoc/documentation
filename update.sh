@@ -20,7 +20,7 @@ for SUBPACKAGE in "photometry" "dataval" "corrections" "starclass"; do
 	git status
 	git pull -f
 
-	if [[ "$SUBPACKAGE" == "photometry" ]; then
+	if [ "$SUBPACKAGE" = "photometry" ]; then
 		grep "numpy" requirements.txt | xargs -I {} pip install "{}" --disable-pip-version-check
 	fi
 

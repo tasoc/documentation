@@ -50,10 +50,10 @@ Contents
 	:maxdepth: 3
 	:numbered: 2
 
-	photometry/index
-	corrections/index
-	dataval/index
-	starclass/index
+	photometry/docs/index
+	corrections/docs/index
+	dataval/docs/index
+	starclass/docs/index
 
 
 Indices and tables

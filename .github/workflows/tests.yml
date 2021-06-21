@@ -1,0 +1,39 @@
+# GitHub Actions workflow for documentation's continuous integration.
+
+name: Tests
+
+on:
+  push:
+    branches: [master, devel]
+  pull_request:
+    branches: [master, devel]
+  schedule:
+    - cron: '0 6 1 * *'  # once a month in the morning
+
+jobs:
+  # Use sphinx to build the documentation
+  docs:
+    name: Build documentation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        lfs: true
+
+    - name: Setup Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-py3.7-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-py3.7-
+          ${{ runner.os }}-pip-
+
+    - name: Build documentation
+      run: ./install.sh
